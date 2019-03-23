@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bestone.dao.UserDao">
+
+	<select id="login" parameterType="userModel" resultType="userModel">
+		select *  from users
+		where phoneNum=#{phoneNum} and passwd=#{passwd}
+	</select>
+
+	<select id="register" parameterType="userModel">
+		insert into users(phoneNum,passwd,username,gender,age)
+			value (#{phoneNum},#{passwd},#{userName},#{gender},#{age});
+	</select>
+
+	<select id="changePassword" parameterType="userModel">
+		update users set passwd=#{passwd} where phoneNum=#{phoneNum};
+	</select>
+</mapper>
