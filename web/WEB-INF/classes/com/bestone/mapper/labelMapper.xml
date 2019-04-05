@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bestone.dao.LabelDao">
+
+    <select id="showLabel" resultType="LabelModel">
+        SELECT
+            label.label_id,
+            label.text,
+            label.classify_id
+        FROM
+            label,
+            classify
+        WHERE
+            label.classify_id = classify.classify_id
+    </select>
+
+</mapper>
+
+

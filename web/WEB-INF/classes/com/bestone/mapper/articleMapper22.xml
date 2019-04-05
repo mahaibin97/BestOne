@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bestone.dao.ArticleDao22">
+
+    <!-- 创建社区文章 -->
+    <insert id="save" parameterType="com.bestone.model.ArticleModel22">
+        Insert into
+          article22(article22_title,article22_abstract,article22_content,phoneNum,time)
+        values
+            (#{article22_title},#{article22_abstract},#{article22_content},#{phoneNum},#{time})
+
+    </insert>
+
+    <!-- 查询当前登录用户发表的所有社区 -->
+    <select id="findShequByUser" resultMap="shequList">
+        SELECT
+            article22.article22_id,
+            article22.article22_title,
+            article22_abstract,
+            article22.time,
+            users.userName
+        FROM
+            article22,
+            users
+        WHERE
+            users.phoneNum = article22.phoneNum
+        AND
+            users.phoneNum = #{phoneNum};
+    </select>
+    <resultMap id="shequList" type="UserArticle22">
+        <id property="article22_id" column="article22_id"/>
+        <result property="article22_title" column="article22_title"/>
+        <result property="article22_abstract" column="article22_abstract"/>
+        <result property="time" column="time"/>
+        <result property="userName" column="userName"/>
+    </resultMap>
+
+    <!-- select 社区所有文章list -->
+    <select id="findAllShequArticle" resultMap="shequArticleList">
+        SELECT
+            article22.article22_id,
+            article22.article22_title,
+            article22_abstract,
+            article22.time,
+            users.userName
+        FROM
+            article22,
+            users
+        WHERE
+            users.phoneNum = article22.phoneNum
+        ORDER BY
+            article22.time DESC;
+    </select>
+    <resultMap id="shequArticleList" type="UserArticle22">
+        <id property="article22_id" column="article22_id"/>
+        <result property="article22_title" column="article22_title"/>
+        <result property="article22_abstract" column="article22_abstract"/>
+        <result property="time" column="time"/>
+        <result property="userName" column="userName"/>
+    </resultMap>
+
+    <!--select shequ article's details by article22_id-->
+    <select id="findShequArticleById" parameterType="ArticleModel22" resultMap="shequArticleDetails">
+        SELECT
+            article22.article22_id,
+            article22.article22_title,
+            article22.article22_abstract,
+            article22.article22_content,
+            article22.time,
+            users.userName
+        FROM
+            article22,
+            users
+        WHERE
+            users.phoneNum = article22.phoneNum and article22.article22_id=#{article22_id};
+
+    </select>
+    <resultMap id="shequArticleDetails" type="UserArticle22">
+        <id property="article22_id" column="article22_id"/>
+        <result property="article22_title" column="article22_title"/>
+        <result property="article22_abstract" column="article22_abstract"/>
+        <result property="article22_content" column="article22_content"/>
+        <result property="time" column="time"/>
+        <result property="userName" column="userName"/>
+    </resultMap>
+
+</mapper>
+

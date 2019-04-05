@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bestone.dao.CommentDao">
+    <select id="addRootComment" parameterType="CommentModel">
+        insert into comment(author_id,article_id,context,date)
+        values (#{phoneNum},#{article_id},#{context},#{date})
+    </select>
+
+    <!--查询根评论-->
+    <select id="getRootComments" parameterType="CommentModel" resultType="CommentModel">
+          select comment.comment_id,users.phoneNum,users.userName,comment.context,comment.date
+          from comment,users
+          where users.phoneNum=comment.author_id and comment.article_id=#{article_id} and root_id is null
+    </select>
+
+
+    <!--回复评论-->
+    <select id="addReplyComment" parameterType="CommentModel">
+        insert into comment(author_id,article_id,context,date,root_id,parent,reply_id)
+        values (#{phoneNum},#{article_id},#{context},#{date},#{root_id},#{parent},#{reply_id})
+    </select>
+
+    <!--查询子评论-->
+    <select id="getChildComments" parameterType="CommentModel" resultType="CommentModel">
+          select comment_id,author_id as phoneNum,article_id,context,date,root_id,parent,reply_id from comment
+          where root_id =#{comment_id}
+    </select>
+
+</mapper>
+
