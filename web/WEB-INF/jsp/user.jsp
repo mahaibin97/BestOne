@@ -17,15 +17,15 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <!-- 顶部 -->
-    <div id="main_top"></div>
-    <div id="user_details"></div>
-    <script type="text/javascript">
-        $(function(){
-            //$.ajaxSetup({ cache:false  });	//关闭缓存
-            $("#main_top").empty().load("top");
-            $("#user_details").empty().load("user_details");
-        });
-    </script>
+<!-- 顶部 -->
+<div id="main_top"></div>
+<div id="user_details"></div>
+<script type="text/javascript">
+    $(function(){
+        //$.ajaxSetup({ cache:false  });	//关闭缓存
+        $("#main_top").empty().load("top");
+        $("#user_details").empty().load("user_details");
+    });
+</script>
 </body>
 </html>

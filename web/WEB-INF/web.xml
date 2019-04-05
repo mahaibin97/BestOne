@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-    <display-name>BestOne Website</display-name>
+    <display-name>f6_ssm_managePlatform</display-name>
 
     <!-- 加载Spring上下文 -->
     <context-param>
@@ -67,6 +67,8 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+
+
 
 
 </web-app>

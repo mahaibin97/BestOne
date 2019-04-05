@@ -17,25 +17,21 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <!-- 顶部 -->
-    <div id="main_top"></div>
-    <!-- 主体 -->
-    <div class="container" style="margin-top:50px">
-        <div class="row">
-            <div id="main_left"></div>
-            <div id="main_right"></div>
-        </div>
-    </div>
-    <!-- 底部 -->
-    <div id="main_bottom"></div>
-    <script type="text/javascript">
-        $(function(){
-            //$.ajaxSetup({ cache:false  });	//关闭缓存
-            $("#main_top").empty().load("top");
-            $("#main_left").empty().load("left");
-            $("#main_right").empty().load("right");
-            $("#main_bottom").empty().load("bottom");
-        });
-    </script>
+<!-- 顶部 -->
+<div id="main_top"></div>
+<!-- 主体 -->
+<div class="container">
+    <div id="main_left"></div>
+</div>
+<!-- 底部 -->
+<div id="main_bottom"></div>
+<script type="text/javascript">
+    $(function(){
+        //$.ajaxSetup({ cache:false  });	//关闭缓存
+        $("#main_top").empty().load("top");
+        $("#main_left").empty().load("left");
+        $("#main_bottom").empty().load("bottom");
+    });
+</script>
 </body>
 </html>

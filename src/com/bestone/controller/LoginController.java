@@ -2,6 +2,8 @@ package com.bestone.controller;
 
 import com.bestone.model.UserModel;
 import com.bestone.service.UserService;
+import com.bestone.util.CopyFileUtil;
+import com.bestone.util.Path;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -9,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
+import java.io.File;
+import java.util.Random;
 
 
 @Controller
@@ -46,7 +49,6 @@ public class LoginController {
         return "redirect:/main";
     }
 
-
     @RequestMapping(value = "toregister")
     public String toRegister(HttpServletRequest request) {
         log.info("----->>>:to register");
@@ -60,12 +62,47 @@ public class LoginController {
         String name=request.getParameter("name");
         String gender=request.getParameter("gender");
         String age=request.getParameter("age");
+        //age
+        char[] ageTemp=age.toCharArray();
+        for(char c:ageTemp){
+            if(c<48||c>57){
+                return "register";
+            }
+        }
+
+        String handShot;
+        Random random=new Random();
+        if(gender.equals("男")){
+            Integer i=random.nextInt(10)+1;
+            handShot="boy"+i.toString()+".png";
+            String resourceImg=Path.handShotPath+"boy"+i.toString()+".png";
+            String outImg=Path.userPath+phone+"\\touxiang";
+            File fileDir=new File(outImg);
+            if(!fileDir.exists()){
+                fileDir.mkdirs();
+            }
+            CopyFileUtil copyUtil=new CopyFileUtil();
+            copyUtil.copyFile1(resourceImg,outImg+"\\"+handShot);
+
+        }else{
+            Integer i=random.nextInt(10)+1;
+            String resourceImg=Path.handShotPath+"girl"+i.toString()+".png";
+            handShot="girl"+i.toString()+".png";
+            String outImg=Path.userPath+phone+"\\touxiang";
+            File fileDir=new File(outImg);
+            if(!fileDir.exists()){
+                fileDir.mkdirs();
+            }
+            CopyFileUtil copyUtil=new CopyFileUtil();
+            copyUtil.copyFile1(resourceImg,outImg+"\\"+handShot);
+        }
         UserModel user=new UserModel();
         user.setPhoneNum(phone);
         user.setUserName(name);
         user.setPasswd(pwd);
         user.setAge(Integer.valueOf(age));
         user.setGender(gender);
+        user.setHandShot(handShot);
         server.register(user);
         UserModel result=server.login(user);
         request.getSession().setAttribute("user",result);

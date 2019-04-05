@@ -15,6 +15,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
 		<mapper resource="com/bestone/mapper/userMapper.xml" />
 		<mapper resource="com/bestone/mapper/articleMapper.xml" />
+		<mapper resource="com/bestone/mapper/labelMapper.xml"/>
+		<mapper resource="com/bestone/mapper/articleMapper22.xml"/>
+		<mapper resource="com/bestone/mapper/commentMapper.xml" />
 
 	</mappers>
 

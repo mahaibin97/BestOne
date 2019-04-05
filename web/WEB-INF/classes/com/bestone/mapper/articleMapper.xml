@@ -4,56 +4,158 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bestone.dao.ArticleDao">
+    <!-- 创建文章 -->
+    <insert id="addArticle" parameterType="articleModel">
+        insert into article(title,article_text,phoneNum,time,labelID)
+        values (#{title},#{article_text},#{phoneNum},#{time},#{labelID})
+    </insert>
 
+    <!--查询最新的数据-->
+    <select id="findNewArticle" resultType="articleModel">
+        select * from article
+        where article_id=(SELECT MAX(article_id)from article )
+    </select>
 
-    <!-- 查询单个文章 -->
-    <select id="findOneArticle" parameterType="articleModel">
+    <!--根据文章的时间和用户来查找文章-->
+    <select id="findArticleByPandT" resultType="articleModel" parameterType="articleModel">
+        select * from article
+        where phoneNum=#{phoneNum} and time=#{time}
+    </select>
+
+    <!--往图片表中插入数据-->
+    <insert id="addArticlePicture" parameterType="pictureModel">
+        insert into pictures(article_id,picture)
+        values (#{articleId},#{picture})
+    </insert>
+    <!-- 查单个文章 -->
+    <select id="findOneArticleById" parameterType="ArticleModel" resultType="ArticleModel">
         select *
         from article
         where article.article_id = #{article_id}
     </select>
 
-    <!-- 创建文章 -->
-    <insert id="addArticle" parameterType="articleModel">
-        insert into
---           article(article_id,title,article_text,phoneNum,overview,thumbsUp,`time`)
-            article(title,article_text)
-        values
-               (#{title},#{article_text})
---                (#{article_id},#{title},#{article_text},#{phoneNum},#{overview},#{thumbsUp},#{time})
-    </insert>
-
-    <!-- 查询当前登录用户发表的所有文章 -->
-
-    <select id="findArticle" parameterType="articleModel" resultMap="ArticleList">
-        SELECT *
-        FROM article
-        where users.phoneNum=article.phoneNum and users.phoneNum=#{phoneNum};
+    <!-- 查询单个文章具体信息 -->
+    <select id="findOneArticleDetailsById" parameterType="ArticleModel" resultMap="ArticleDetails">
+        select *
+        from article,users,pictures
+        where article.article_id = #{article_id} and article.article_id=pictures.article_id and article.phoneNum=users.phoneNum
     </select>
 
-    <resultMap id="ArticleList" type="ArticleModel">
+    <!--查询瞬间用于主页-->
+    <select id="findHotArticles" resultMap="ArticleDetails" parameterType="PageModel">
+        select *from article,users,pictures
+        where article.article_id=pictures.article_id and article.phoneNum=users.phoneNum
+        ORDER BY thumbsUp DESC LIMIT #{nowCount},#{pageSize}
+    </select>
+    <resultMap id="ArticleDetails" type="UserArticlePicture">
         <id property="article_id" column="article_id"/>
         <result property="title" column="title"/>
+        <result property="phoneNum" column="phoneNum"/>
         <result property="article_text" column="article_text"/>
+        <result property="overview" column="overview"/>
+        <result property="thumbsUp" column="thumbsUp"/>
+        <result property="time" column="time"/>
+        <result property="labelID" column="labelID"/>
+        <result property="keyWords" column="keyWords"/>
+
+        <result property="userName" column="userName"/>
+        <result property="gender" column="gender"/>
+        <result property="age" column="age"/>
+        <result property="userAddress" column="userAddress"/>
+        <result property="job" column="job"/>
+        <result property="sign" column="sign"/>
+        <result property="handShot" column="handShot"/>
+
+        <result property="pictureId" column="pictureId"/>
+        <result property="picture" column="picture"/>
     </resultMap>
 
+    <!-- 查询当前登录用户发表的所有文章 -->
+    <select id="findArticleByUser" parameterType="UserModel" resultMap="ArticleDetails">
+        SELECT *
+        FROM article,users,pictures
+        where article.article_id=pictures.article_id and
+            article.phoneNum=users.phoneNum and users.phoneNum=#{phoneNum};
+    </select>
 
-    <!--<resultMap id="resultUserArticleList" type="UserAndArticleModel">-->
-        <!--<id property="article_id" column="aid"/>-->
-        <!--<result property="title" column="title"/>-->
-        <!--<result property="article_text" column="article_text"/>-->
 
-        <!--<association property="user" javaType="UserModel">-->
-            <!--<id property="phoneNum" column="phoneNum"/>-->
-            <!--<result property="userName" column="userName"/>-->
+    <!--文章浏览数加1-->
+    <select id="addArticleOverview" parameterType="articleModel">
+        UPDATE article set overview=overview+1
+        where article_id= #{article_id};
+    </select>
 
-        <!--</association>-->
-    <!--</resultMap>-->
+    <!--文章点赞-->
+    <select id="addArticleThumbsUp" parameterType="articleModel">
+        UPDATE article set thumbsUp=thumbsUp+1
+        where article_id= #{article_id};
+    </select>
 
-    <!--<select id="findArticles" parameterType="int" resultMap="resultUserArticleList">-->
-        <!--select user.phoneNum,user.userName,article.id aid,article.title,article.article_text-->
-        <!--from user,article-->
-        <!--where user.id=article.phoneNum and user.phoneNum=#{phoneNum}-->
+    <!--获取文章标签-->
+    <select id="getArticleLabel" parameterType="articleModel" resultType="LabelModel">
+        select label.label_id,label.text,label.classify_id from label,article
+        where article.article_id=#{article_id} and article.labelID=label.label_id;
+    </select>
+
+    <!--查看用户收藏过的文章-->
+    <select id="findArticleByCollection" parameterType="UserModel" resultMap="ArticleDetails">
+        SELECT *
+        FROM article,users,pictures
+        where article.article_id=pictures.article_id and
+            article.phoneNum=users.phoneNum and
+                article.article_id in
+                (SELECT article_id from users_collection_article
+                 where phoneNum=#{phoneNum})
+    </select>
+
+    <!--查看用户评论过的文章-->
+
+    <select id="findArticleByComment" parameterType="UserModel" resultMap="ArticleDetails">
+        SELECT *
+        FROM article,users,pictures
+        where article.article_id=pictures.article_id and
+            article.phoneNum=users.phoneNum and
+                article.article_id in
+                (SELECT article_id from comment
+                 WHERE author_id=#{phoneNum})
+    </select>
+
+    <!--获取文章总数-->
+    <select id="getArticleCount" resultType="int">
+        select count(*)
+        FROM article,users,pictures
+        where article.article_id=pictures.article_id and
+            article.phoneNum=users.phoneNum
+    </select>
+
+    <!--根据分类查询文章-->
+
+    <select id="findArticleByClassify" parameterType="LabelModel" resultMap="ArticleDetails">
+        SELECT * from article,users,pictures
+        where article.article_id=pictures.article_id and article.phoneNum=users.phoneNum and article.labelID IN
+                                                                                             (SELECT labelID from label_classify
+                                                                                              where classify_id=#{classify_id} and article.labelID=label_classify.label_id)
+        ORDER BY thumbsUp DESC;
+    </select>
+
+    <!--新增加的 mapper-->
+    <!--获取分类文章总数-->
+    <select id="getArticleCountByClassify" resultType="int" parameterType="LabelModel">
+        select count(*)
+        FROM article,users,pictures
+        where article.article_id=pictures.article_id and
+            article.phoneNum=users.phoneNum and article.labelID IN
+                                                (SELECT labelID from label_classify
+                                                 where classify_id=#{classify_id} and article.labelID=label_classify.label_id);
+    </select>
+
+    <!--根据分类查询文章-->
+    <!--<select id="findArticleByClassify" parameterType="LabelModel" resultMap="ArticleDetails">-->
+        <!--SELECT * from article,users,pictures-->
+        <!--where article.article_id=pictures.article_id and article.phoneNum=users.phoneNum and article.labelID IN-->
+                                                                                             <!--(SELECT labelID from label_classify-->
+                                                                                              <!--where classify_id=#{classify_id} and article.labelID=label_classify.label_id)-->
+        <!--ORDER BY thumbsUp;-->
     <!--</select>-->
 </mapper>
 

@@ -13,19 +13,35 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
    
-<!-- 前端映射器：2. DefaultAnnotationHandlerMapping  -->
+    <!-- 前端映射器：2. DefaultAnnotationHandlerMapping  -->
     <!-- 包扫描，使用spring注解的类变成javaBean  -->      
     <context:component-scan base-package="com.bestone" />
     <!-- 开启MVC注解 -->
     <mvc:annotation-driven/>
+    <!-- spring mvc 注解及类型转换 -->
+    <mvc:annotation-driven conversion-service="conversionService" />
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+    </bean>
     
-<!-- 视图解析器：InternalResourceViewResolver -->
+    <!-- 视图解析器：InternalResourceViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+    <!-- 文件最大上传大小 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+
 
     <mvc:resources location="/images/" mapping="/images/**" />
+    <mvc:resources location="/css/" mapping="/css/**" />
+    <mvc:resources mapping="/js/" location="/js/**"/>
+    <mvc:resources location="/ueditor/" mapping="/ueditor/**" />
+    <!--<mvc:resources location="classpath:ueditor/" mapping="/ueditor/**" />-->
+    <!--<mvc:resources location="/upload/" mapping="/upload/**" />-->
 
 </beans>
 

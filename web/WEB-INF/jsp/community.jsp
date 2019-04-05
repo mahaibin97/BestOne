@@ -18,10 +18,11 @@
 </head>
 <body>
     <div id="top"></div>
-    <div id="container" style="width:1000px;height:4000px;align-content: center; margin:0px auto;">
-        <div id="community_left"></div>
-        <div id="community_right"></div>
+    <div id="container" style="width:1100px;height:auto;align-content: center; margin:auto auto;">
+        <div id="community_left" style="background-color:#FFFFFF; height:auto; width:800px; float:left; margin-right: 10px;"></div>
+        <div id="community_right" style="background-color:#EEEEEE; height:2000px; width:250px; float:right;align-items: center; margin-left: auto;"></div>
     </div>
+
     <script type="text/javascript">
         $(function(){
             //$.ajaxSetup({ cache:false  });	//关闭缓存

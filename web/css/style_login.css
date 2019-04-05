@@ -1,0 +1,38 @@
+body{
+    background: url("../images/background22.jpg");
+    animation-name:myfirst;
+    animation-duration:10s;
+    /*变换时间*/
+    animation-delay:2s;
+    /*动画开始时间*/
+    animation-iteration-count:infinite;
+    /*下一周期循环播放*/
+    animation-play-state:running;
+    /*动画开始运行*/
+    /*-webkit-animation: myfirst 5s;*/
+    background-size:contain;
+
+}
+
+@keyframes myfirst
+    /*@-webkit-keyframes myfirst*/
+{
+    1%  {background:url("../images/background22.jpg");}
+    34%  {background:url("../images/background22.jpg");}
+    67%  {background:url("../images/background33.jpg");}
+    100% {background:url("../images/background22.jpg");}
+}
+
+
+
+.form{background: rgba(255,255,255,0.29);width:600px;margin:60px auto;}
+/*阴影*/
+.fa{display: inline-block;top: 25px;left: 8px;position: relative;color: #C0C0C0;}
+input[type="text"],input[type="password"]{padding-left:26px;}
+
+.checkbox{padding-left:21px;}
+
+label_style{
+    color: #FFFFFF;
+    font-size: 15px;
+}

@@ -14,13 +14,6 @@ public class UserModel {
     private String handShot;
     //*****
     private List<ArticleModel> addressList=new ArrayList<ArticleModel>();
-
-    public List<ArticleModel> getAddressList() {
-        return addressList;
-    }
-    public void setAddressList(List<ArticleModel> addressList) {
-        this.addressList = addressList;
-    }
     public UserModel() {
         super();
     }
@@ -107,6 +100,13 @@ public class UserModel {
 
     public void setHandShot(String handShot) {
         this.handShot = handShot;
+    }
+
+    public List<ArticleModel> getAddressList() {
+        return addressList;
+    }
+    public void setAddressList(List<ArticleModel> addressList) {
+        this.addressList = addressList;
     }
 
     @Override

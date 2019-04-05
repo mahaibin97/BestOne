@@ -9,12 +9,38 @@
 		where phoneNum=#{phoneNum} and passwd=#{passwd}
 	</select>
 
+
+	<!--根据用户id查询-->
+	<select id="getUserById" parameterType="userModel" resultType="userModel">
+		select *  from users
+		where phoneNum=#{phoneNum}
+	</select>
+
 	<select id="register" parameterType="userModel">
-		insert into users(phoneNum,passwd,username,gender,age)
-			value (#{phoneNum},#{passwd},#{userName},#{gender},#{age});
+		insert into users(phoneNum,passwd,username,gender,age,handShot)
+			value (#{phoneNum},#{passwd},#{userName},#{gender},#{age},#{handShot});
 	</select>
 
 	<select id="changePassword" parameterType="userModel">
 		update users set passwd=#{passwd} where phoneNum=#{phoneNum};
 	</select>
+
+	<select id="updateUserInformation" parameterType="userModel">
+		update users set passwd=#{passwd},gender=#{gender},age=#{age},
+						 userAddress=#{userAddress},job=#{job},sign=#{sign},handShot=#{handShot}
+		where phoneNum=#{phoneNum};
+	</select>
+
+	<!--收藏文章-->
+	<select id="collectArticle" parameterType="UserCollectionArticle">
+		insert into users_collection_article(phoneNum,article_id)
+		value (#{phoneNum},#{article_id});
+	</select>
+
+	<!--查询文章是否被收藏-->
+	<select id="judgeCollection" parameterType="UserCollectionArticle" resultType="UserCollectionArticle">
+		select phoneNum,article_id from users_collection_article
+		where phoneNum=#{phoneNum} and article_id= #{article_id}
+	</select>
+
 </mapper>
